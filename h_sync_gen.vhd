@@ -50,66 +50,69 @@ type h_sync_type is
 signal state_reg, state_next : h_sync_type;
 begin
 
-process(clk,reset)
+process(clk, reset)
    begin
       if (reset='1') then
          state_reg <= ActiveVideo;
-			count <= (others => '0');
       elsif (clk'event and clk='1') then
-         count <= count_next;
 			state_reg <= state_next;
       end if;
 end process;
 
-process(count)
+
+process(clk,reset)
+   begin
+      if (reset='1') then
+			count <= (others => '0');
+      elsif rising_edge(clk) then
+         count <= count_next;
+      end if;
+end process;
+
+
+
+--next state logic
+process(count, state_reg)
 	begin
+		
+		state_next <= state_reg;
+	
 		case state_reg is
 			when ActiveVideo =>
-				if (count <"1010000000") then
-					state_next <= ActiveVideo;
-					count_next <= count +"0000000001";	
-				else
+				if (count = 640) then
 					state_next <= FrontPorch;
-					count_next <= (others => '0');
 				end if;
 			when FrontPorch =>
-				if (count<16) then
-					count_next <= count +1;
-					state_next <= FrontPorch;
-				else 
+				if (count = 16) then
 					state_next <= Sync;
-					count_next <= (others => '0');
 				end if;
 			when Sync =>
-				if (count <96) then
-					state_next <= Sync;
-					count_next <= count +1;
-				else
+				if (count = 96) then
 					state_next <= BackPorch;
-					count_next <= (others => '0');
 				end if;
 			when BackPorch =>
-				if (count <17) then
-					state_next <= BackPorch;
-					count_next <= count +1;
-				else	
+				if (count = 17) then
 					state_next <= Complete;
-					count_next <= (others => '0');
 				end if;
 			when Complete =>
-				if (count <1) then
-					state_next <= Complete;
-					count_next <= count +1;
-				else	
-					state_next <= ActiveVideo;	
-					count_next <= (others => '0');		
-				end if;		
+				state_next <= ActiveVideo;	
 		end case;
 	end process;
 
- process(state_next)
-   begin
+--count_next logic
+count_next <= (others => '0') when (state_reg /= state_next) else
+					count +1;
+
+--output logic
+
+ process(state_next, count)
 	
+   begin
+		h_sync <= '0';
+		blank <='0';
+		completed <='0';
+		column <= (others => '0');
+       
       case state_next is
          when ActiveVideo =>
             h_sync <= '1';
