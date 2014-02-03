@@ -40,9 +40,34 @@ entity vga_sync is
            column : out  unsigned (10 downto 0));
 end vga_sync;
 
+
 architecture Behavioral of vga_sync is
 
-signal v_blank : STD_LOGIC;
+signal v_blank, h_blank, h_completed : STD_LOGIC;
+COMPONENT v_sync_gen
+	PORT(
+		clk : IN std_logic;
+		reset : IN std_logic;
+		h_blank : IN std_logic;
+		h_completed : IN std_logic;          
+		v_sync : OUT std_logic;
+		blank : OUT std_logic;
+		completed : OUT std_logic;
+		row : OUT unsigned(10 downto 0)
+		);
+	END COMPONENT;
+	
+	COMPONENT h_sync_gen
+	PORT(
+		clk : IN std_logic;
+		reset : IN std_logic;          
+		h_sync : OUT std_logic;
+		blank : OUT std_logic;
+		completed : OUT std_logic;
+		column : OUT unsigned(10 downto 0)
+		);
+	END COMPONENT;		
+
 
 begin
 Inst_v_sync_gen: v_sync_gen PORT MAP(
@@ -66,7 +91,15 @@ Inst_h_sync_gen: h_sync_gen PORT MAP(
 	);
 
 
-process(h_blank, blank){
+process(h_blank, v_blank)
+	begin
+		blank <= '1';
+		if( (h_blank = '0') and (v_blank ='0') ) then
+			blank <= '0';
+		else
+			blank <= '1';
+		end if;
+	end process;
 
 
 end Behavioral;
