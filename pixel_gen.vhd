@@ -35,60 +35,67 @@ entity pixel_gen is
            blank : in  STD_LOGIC;
            r : out  unsigned (7 downto 0);
            g : out  unsigned (7 downto 0);
-           b : out  unsigned (7 downto 0));
+           b : out  unsigned (7 downto 0)
+			  );
 end pixel_gen;
 
 architecture Behavioral of pixel_gen is
 
 type color_type is
 (black, red, blue, green, yellow, white);
-
 signal color_result: color_type;
+
 begin
 
-
-process(blank)
-	begin 
+process(blank, row, column)
+begin 
 	color_result <= black;
 	
 	if(blank = '1') then
 		color_result <= black;
-	else 
+	elsif ( row > 512) then
+		color_result <= yellow;
+	elsif(column < 160) then
 		color_result <=red;
-	end if;
+	elsif (column < 320) then
+		color_result <=green;		
+	else 
+		color_result <=blue;
+	end if; 
+				
 end process;
 
 process(color_result)
 begin 
-	r <= 0;
-	g <= 0;
-	b <= 0;
+	r <= ( others=>'0');
+	g <= ( others=>'0');
+	b <= ( others=>'0');
 	
 	case color_result is
 		when red =>
-			r <= 255;
-			g <= 0;
-			b <= 0;
+			r <= "11111111";
+			g <= ( others=>'0');
+			b <= ( others=>'0');
 		when green =>
-			r <= 0;
-			g <= 255;
-			b <= 0;
+			r <= ( others=>'0');
+			g <= "11111111";
+			b <= ( others=>'0');
 		when blue =>
-			r <=0;
-			g <=0;
-			b <=255;
+			r <=( others=>'0');
+			g <=( others=>'0');
+			b <="11111111";
 		when black =>
-			r <= 0;
-			g <= 0;
-			b <= 0;
+			r <= ( others=>'0');
+			g <= ( others=>'0');
+			b <= ( others=>'0');
 		when white =>
-			r <= 255;
-			g <= 255;
-			b <= 255;
+			r <= "11111111";
+			g <= "11111111";
+			b <= "11111111";
 		when yellow =>
-			r <= 0;
-			g <= 255;
-			b <= 255;
+			r <= ( others=>'0');
+			g <= "11111111";
+			b <= "11111111";
 		end case;
  end process;
 
