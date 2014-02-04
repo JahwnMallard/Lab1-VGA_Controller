@@ -56,7 +56,7 @@ process(clk, reset)
    begin
       if (reset='1') then
          state_reg <= ActiveVideo;
-      elsif (clk'event and clk='1') then
+      elsif rising_edge(clk) then
 			state_reg <= state_next;
       end if;
 end process;
@@ -79,7 +79,9 @@ process(count, state_reg)
 		
 		state_next <= state_reg;
 	
+	if(h_completed = '1') then
 		case state_reg is
+		
 			when ActiveVideo =>
 				if (count = 480) then
 					state_next <= FrontPorch;
@@ -93,12 +95,14 @@ process(count, state_reg)
 					state_next <= BackPorch;
 				end if;
 			when BackPorch =>
-				if (count = 33) then
+				if (count = 32) then
 					state_next <= Complete;
 				end if;
 			when Complete =>
 				state_next <= ActiveVideo;	
+			
 		end case;
+		end if;	
 	end process;
 
 --count_next logic
@@ -108,7 +112,7 @@ count_next <= (others => '0') when (state_reg /= state_next) else
 
 --output logic
 
- process(state_next, count)
+ process(state_next, count_next, h_completed)
 	
    begin
 		v_sync <= '0';
@@ -121,7 +125,7 @@ count_next <= (others => '0') when (state_reg /= state_next) else
             v_sync <= '1';
 				blank <='0';
 				completed <='0';
-				row <= count;
+				row <= count_next;
          when FrontPorch =>
             v_sync <= '1';
 				blank <='1';

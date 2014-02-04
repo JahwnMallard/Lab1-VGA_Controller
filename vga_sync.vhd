@@ -81,6 +81,7 @@ Inst_v_sync_gen: v_sync_gen PORT MAP(
 		row => row
 	);
 
+
 Inst_h_sync_gen: h_sync_gen PORT MAP(
 		clk => clk,
 		reset => reset,
@@ -91,15 +92,8 @@ Inst_h_sync_gen: h_sync_gen PORT MAP(
 	);
 
 
-process(h_blank, v_blank)
-	begin
-		blank <= '1';
-		if( (h_blank = '0') and (v_blank ='0') ) then
-			blank <= '0';
-		else
-			blank <= '1';
-		end if;
-	end process;
+blank <= (h_blank or v_blank);
+
 
 
 end Behavioral;

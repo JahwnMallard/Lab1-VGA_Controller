@@ -41,33 +41,14 @@ end atlys_lab_video;
 
 architecture Miller of atlys_lab_video is
 
-COMPONENT dvid
-	PORT(
-		clk : IN std_logic;
-		clk_n : IN std_logic;
-		clk_pixel : IN std_logic;
-		red_p : IN std_logic_vector(7 downto 0);
-		green_p : IN std_logic_vector(7 downto 0);
-		blue_p : IN std_logic_vector(7 downto 0);
-		blank : IN std_logic;
-		hsync : IN std_logic;
-		vsync : IN std_logic;          
-		red_s : OUT std_logic;
-		green_s : OUT std_logic;
-		blue_s : OUT std_logic;
-		clock_s : OUT std_logic
-		);
-	END COMPONENT;
-
-
 	COMPONENT pixel_gen
 	PORT(
 		row : IN unsigned(10 downto 0);
 		column : IN unsigned(10 downto 0);
 		blank : IN std_logic;          
-		r : OUT unsigned(7 downto 0);
-		g : OUT unsigned(7 downto 0);
-		b : OUT unsigned(7 downto 0)
+		r : OUT std_logic_vector(7 downto 0);
+		g : OUT std_logic_vector(7 downto 0);
+		b : OUT std_logic_vector(7 downto 0)
 		);
 	END COMPONENT;
 
@@ -85,16 +66,16 @@ COMPONENT dvid
 	END COMPONENT;
 	
 	signal row_sig, col_sig : unsigned (10 downto 0);
-	signal  pixel_clk, serialize_clk, serialize_clk_n, h_sync, v_sync, v_completed, blank, clock_s, red_s, green_s, blue_s : std_logic;
-	signal red, blue, green : unsigned (7 downto 0);
+	signal  pixel_clk, serialize_clk, serialize_clk_n, h_sync, v_sync, blank, clock_s, red_s, green_s, blue_s : std_logic;
+	signal red, blue, green : std_logic_vector (7 downto 0);
 begin
 
 Inst_vga_sync: vga_sync PORT MAP(
-		clk => clk,
+		clk => pixel_clk,
 		reset => reset,
 		h_sync => h_sync,
 		v_sync => v_sync,
-		v_completed => v_completed,
+		v_completed => open,
 		blank => blank,
 		row => row_sig,
 		column => col_sig
@@ -146,9 +127,9 @@ Inst_vga_sync: vga_sync PORT MAP(
                 clk       => serialize_clk,
                 clk_n     => serialize_clk_n, 
                 clk_pixel => pixel_clk,
-                red_p     => std_logic_vector(red),
-                green_p   => std_logic_vector(green),
-                blue_p    => std_logic_vector(blue),
+                red_p     => red,
+                green_p   => green,
+                blue_p    => blue,
                 blank     => blank,
                 hsync     => h_sync,
                 vsync     => v_sync,
