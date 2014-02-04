@@ -53,7 +53,7 @@ begin
 	
 	if(blank = '1') then
 		color_result <= black;
-	elsif ( row > 512) then
+	elsif ( row > 511) then
 		color_result <= yellow;
 	elsif(column < 160) then
 		color_result <=red;
