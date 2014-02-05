@@ -32,6 +32,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity atlys_lab_video is
     Port ( clk : in  STD_LOGIC;
            reset : in  STD_LOGIC;
+			  SW6: in STD_LOGIC;
+			  SW7: in STD_LOGIC;
            tmds : out  STD_LOGIC_VECTOR (3 downto 0);
            tmdsb : out  STD_LOGIC_VECTOR (3 downto 0));
 end atlys_lab_video;
@@ -45,7 +47,9 @@ architecture Miller of atlys_lab_video is
 	PORT(
 		row : IN unsigned(10 downto 0);
 		column : IN unsigned(10 downto 0);
-		blank : IN std_logic;          
+		blank : IN std_logic;   
+		switch_6 : in std_logic;
+		switch_7 : in std_logic;
 		r : OUT std_logic_vector(7 downto 0);
 		g : OUT std_logic_vector(7 downto 0);
 		b : OUT std_logic_vector(7 downto 0)
@@ -85,6 +89,8 @@ Inst_vga_sync: vga_sync PORT MAP(
 		row => row_sig,
 		column => col_sig,
 		blank => blank,
+		switch_6 => SW6,
+		switch_7 => SW7,
 		r => red,
 		g => green,
 		b => blue
