@@ -95,7 +95,7 @@ BEGIN
 		assert (h_sync = '1') report "init not working - h_sync";
 		assert (blank = '0') report "init not working - blank";
 		assert (completed = '0') report "init not working - completed";
-		assert (column = 0) report "init not working - column";
+		assert (column = 1) report "init not working - column";
   
 		reset <= '0';
 
@@ -104,9 +104,9 @@ BEGIN
 		assert (h_sync = '1') report "active video not working - h_sync";
 		assert (blank = '0') report "active video not working - blank";
 		assert (completed = '0') report "active video not working - completed";
-		assert (column = 1) report "active video not working - column";
+		assert (column = 2) report "active video not working - column";
 		
-		wait for clk_period*638;
+		wait for clk_period*637;
 		assert (h_sync = '1') report "active video not working - h_sync";
 		assert (blank = '0') report "active video not working - blank";
 		assert (completed = '0') report "active video not working - completed";
