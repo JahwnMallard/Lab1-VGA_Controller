@@ -184,7 +184,7 @@ Testing the module's funcitonality consisted of running tesbenches and asserting
 ```
 An example waveform for the example code is shown below
 
-![H_sync waveform](h_sync_waveform.jpg)
+![H_sync waveform](H_sync_waveform.jpg)
 
 The hardest thing to test was the V_sync module, as it was hard to time out clock cycles, since it relied on the H_sync module to assert its "completed" signal. That testing was done by viewing the waveform, which is shown below.
 
