@@ -127,15 +127,77 @@ V_sync:
 ![V_sync state transitions](v_sync_state.jpg)
 
 
-Installation
+Troubleshooting
 --------------
 
-```sh
-git clone [git-repo-url] dillinger
-cd dillinger
-npm i -d
-mkdir -p public/files/{md,html,pdf}
+The biggest troubles I had can be separated by module:
+
+H_sync_gen
+
+-   Transitioning from backporch to active video gave me a lot of problems because it held the column value at 0 for an extra clock cycle, which threw off a lot of the functionality. This was fixed bey changing the sensitivity of that process to by sensitive to the count_next register instead of the count value.
+
+V_sync_gen
+- I didn't make the state transitions sesnsitive to "h_completed", so the state was changing too often and wouldn't hold at individual pixels, so the VGA monitor could not interpret the output. 
+- This module gave a lot of problems with being one clock cycle off, so adjusting all of the state transition conditions by 1 alleviated this.
+
+Pixel_gen
+
+- This did not give much trouble, I tried to get too fancy with color states (will be implemented in a future update), so I couldn't tell where the problem was. For testing, I changed the output to a single color and tested it, then I changed it to a more complex pattern when it worked.
+
+VGA_sync
+- This was a very simple module, the only error I had was with my output logic, I was using "and" when I needed to use  "or".
+
+Confirming functionality
+--------------
+
+Testing the module's funcitonality consisted of running tesbenches and asserting that each module would have certain outputs at certain clock cycles. Example code is given below.
+
+```VHDL
+  stim_proc: process
+   begin    	
+      -- hold reset state for 100 ns.
+		reset <= '1';
+	   wait for 5 ns;	
+		assert (h_sync = '1') report "init not working - h_sync";
+		assert (blank = '0') report "init not working - blank";
+		assert (completed = '0') report "init not working - completed";
+		assert (column = 1) report "init not working - column";
+  
+		reset <= '0';
+
+
+      wait for clk_period*1;
+		assert (h_sync = '1') report "active video not working - h_sync";
+		assert (blank = '0') report "active video not working - blank";
+		assert (completed = '0') report "active video not working - completed";
+		assert (column = 2) report "active video not working - column";
+		
+		wait for clk_period*637;
+		assert (h_sync = '1') report "active video not working - h_sync";
+		assert (blank = '0') report "active video not working - blank";
+		assert (completed = '0') report "active video not working - completed";
+		assert (column = 639) report "active video not working - column";
+		
+      wait;
+   end process;
+
 ```
+An example waveform for the example code is shown below
+
+![H_sync waveform](h_sync_waveform.jpg)
+
+The hardest thing to test was the V_sync module, as it was hard to time out clock cycles, since it relied on the H_sync module to assert its "completed" signal. That testing was done by viewing the waveform, which is shown below.
+
+![V_sync waveform](v_sync_waveform.jpg)
+
+Lessons Learned
+---
+
+* The main lesson was to have thorough testbenches, looking through mine, I didn't put quite as much effort in as I should have
+* 
+
+
+
 
 ##### Configure Plugins. Instructions in following README.md files
 
