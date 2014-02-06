@@ -114,24 +114,24 @@ Inst_h_sync_gen: h_sync_gen PORT MAP(
       -- hold reset state for 100 ns.
 		reset <= '1';
 	   wait for 5 ns;	
-		assert (v_sync = '1') report "init not working - h_sync";
+		assert (v_sync = '1') report "init not working - v_sync";
 		assert (blank = '0') report "init not working - blank";
 		assert (completed = '0') report "init not working - completed";
-		assert (row = 0) report "init not working - column";
+		assert (row = 0) report "init not working - row";
   
 		reset <= '0';
 		
       wait for 1 ns;
-		assert (v_sync = '1') report "active video not working - h_sync";
+		assert (v_sync = '1') report "active video not working - v_sync";
 		assert (blank = '0') report "active video not working - blank";
 		assert (completed = '0') report "active video not working - completed";
-		assert (row = 1) report "active video not working - column";
+		assert (row = 0) report "active video not working - row";
 		
 		wait for clk_period*799;
-		assert (v_sync = '1') report "active video not working - h_sync";
+		assert (v_sync = '1') report "active video not working - v_sync";
 		assert (blank = '0') report "active video not working - blank";
 		assert (completed = '0') report "active video not working - completed";
-		assert (row = 1) report "active video not working - column";
+		assert (row = 1) report "active video not working - row";
 		
       wait;
    end process;
