@@ -194,40 +194,20 @@ Lessons Learned
 ---
 
 * The main lesson was to have thorough testbenches, looking through mine, I didn't put quite as much effort in as I should have
-* 
+* Don't assume that clock cycles will match up just because the waveform "looks right". With things like this, the timing needs to be immaculate.
+* Write synthasizable code. The synthasizer is not psychic, it can't make good hardware out of bad code.
 
 
 
 
-##### Configure Plugins. Instructions in following README.md files
+##### TODO
 
-* plugins/dropbox/README.md
-* plugins/github/README.md
-* plugins/googledrive/README.md
+* implement a look-ahead buffer
+* convert code to use generics
+* test reset cases
 
-```sh
-node app
-```
-
-
-License
+Documentation
 ----
 
-MIT
+C2C Ryan Good was a great help in helping me debug my V_sync module
 
-
-**Free Software, Hell Yeah!**
-
-[john gruber]:http://daringfireball.net/
-[@thomasfuchs]:http://twitter.com/thomasfuchs
-[1]:http://daringfireball.net/projects/markdown/
-[marked]:https://github.com/chjj/marked
-[Ace Editor]:http://ace.ajax.org
-[node.js]:http://nodejs.org
-[Twitter Bootstrap]:http://twitter.github.com/bootstrap/
-[keymaster.js]:https://github.com/madrobby/keymaster
-[jQuery]:http://jquery.com
-[@tjholowaychuk]:http://twitter.com/tjholowaychuk
-[express]:http://expressjs.com
-
-    
