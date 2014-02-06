@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company: 		USAF Academy
+-- Engineer: 		C2C John Miller
 -- 
 -- Create Date:    14:22:28 02/03/2014 
 -- Design Name: 
 -- Module Name:    vga_sync - Behavioral 
--- Project Name: 
+-- Project Name: 		ECE 383 Lab 1
 -- Target Devices: 
 -- Tool versions: 
--- Description: 
+-- Description: 		Outputs a row and column (pixel location) for a vga controller
 --
 -- Dependencies: 
 --
@@ -92,6 +92,7 @@ Inst_h_sync_gen: h_sync_gen PORT MAP(
 	);
 
 
+--The screen is blank if either the horizontal or vertical sync assert their blank outputs
 blank <= (h_blank or v_blank);
 
 

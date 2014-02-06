@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company: 	USAF Academy
+-- Engineer: 	C2C John Miller
 -- 
 -- Create Date:    10:24:08 01/31/2014 
 -- Design Name: 
 -- Module Name:    v_sync_gen - Behavioral 
--- Project Name: 
+-- Project Name: 	 ECE 383 lab 1
 -- Target Devices: 
 -- Tool versions: 
--- Description: 
+-- Description:  Syncs the vertical element for a vga controller
 --
 -- Dependencies: 
 --
@@ -51,7 +51,7 @@ type v_sync_type is
 
 signal state_reg, state_next : v_sync_type;
 begin
-
+ --state register
 process(clk, reset)
    begin
       if (reset='1') then
@@ -61,7 +61,7 @@ process(clk, reset)
       end if;
 end process;
 
-
+--count register
 process(clk,reset)
    begin
       if (reset='1') then

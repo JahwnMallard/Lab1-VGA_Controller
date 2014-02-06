@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company: USAF Academy
+-- Engineer: C2C John Miller
 -- 
 -- Create Date:    10:19:48 01/29/2014 
 -- Design Name: 
 -- Module Name:    h_sync_gen - Behavioral 
--- Project Name: 
+-- Project Name: 		ECE 383 Lab 1
 -- Target Devices: 
 -- Tool versions: 
--- Description: 
+-- Description: 	Syncs the horizontal element for a vga controller
 --
 -- Dependencies: 
 --
@@ -50,6 +50,7 @@ type h_sync_type is
 signal state_reg, state_next : h_sync_type;
 begin
 
+--state register
 process(clk, reset)
    begin
       if (reset='1') then
@@ -59,7 +60,7 @@ process(clk, reset)
       end if;
 end process;
 
-
+--count register
 process(clk,reset)
    begin
       if (reset='1') then

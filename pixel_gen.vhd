@@ -1,15 +1,15 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company: USAF Academy
+-- Engineer: C2C John Miller
 -- 
 -- Create Date:    15:32:14 02/03/2014 
 -- Design Name: 
 -- Module Name:    pixel_gen - Behavioral 
--- Project Name: 
+-- Project Name:   Atlys Video - Lab1
 -- Target Devices: 
 -- Tool versions: 
--- Description: 
---
+-- Description: Code to generate pixel pattern for the top shell
+--	
 -- Dependencies: 
 --
 -- Revision: 
@@ -43,6 +43,7 @@ end pixel_gen;
 
 architecture Behavioral of pixel_gen is
 
+--block of code I'm considering implementing, it may make code more readable
 --type color_type is
 --(black, red, blue, green, yellow, white);
 --signal color_result: color_type;
@@ -60,19 +61,24 @@ begin
 	g <= ( others=>'0');
 	b <= ( others=>'0');
 
+--I very much guessed the RGB values here, I was just looking for 4 distinct patterns
 	elsif(switch_6 = '0' and switch_7 = '0') then
+	-- bottom third of the screen
 					if ( row > 320)  then
 							r <= ( others=>'1');
 							g <=(others => '1');
 							b <= (others => '0');
+	-- left third of screen						
 					elsif(column < 214) then
 							r <= ( others=>'1');
 							g <= ( others=>'0');
 							b <= (others => '0');
+	-- middle third of screen						
 					elsif (column < 427) then
 							r <= ( others=>'0');
 							g <=  (others => '1');
-							b <= ( others=>'0');					
+							b <= ( others=>'0');		
+	-- right third of screen						
 					else 
 							r <= ( others=>'0');
 							g <= ( others=>'0');
